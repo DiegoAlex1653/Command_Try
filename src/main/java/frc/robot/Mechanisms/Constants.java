@@ -2,6 +2,7 @@ package frc.robot.Mechanisms;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 
+
 public class MechanismsConstants {
 
     public class IntakeConstants {
@@ -36,8 +37,8 @@ public class IntakeboxConstants {
 }
 
   public static final class OutakeConstants {
-//checar las id
-        public static final int shooterLeftId = 22;     
+
+        public static final int shooterLeftId = 22;     //Recordatorio para modificar los Id
         public static final int shooterRightId = 23;
         public static final int hoodId = 24;
         public static final InvertedValue shooterLeftInversion = InvertedValue.CounterClockwise_Positive;
@@ -82,6 +83,8 @@ public class IntakeboxConstants {
     public static final double kV = 0.0;
     public static final double kA = 0.0;
 }
+
+
 }
 
 public final class Constants {
