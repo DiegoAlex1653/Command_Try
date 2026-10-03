@@ -1,25 +1,25 @@
 package frc.robot.Mechanisms;
-
+ 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+ 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Mechanisms.MechanismsConstants.OutakeConstants;
 import frc.robot.Mechanisms.MechanismsConstants.ShootContants;
-
+ 
 public class OutakeSub extends SubsystemBase {
-
+ 
     private final TalonFX shooterLeft = new TalonFX(OutakeConstants.shooterLeftId);
     private final TalonFX shooterRight = new TalonFX(OutakeConstants.shooterRightId);
     private final TalonFX hood = new TalonFX(OutakeConstants.hoodId);
-
+ 
     private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
     private final PositionVoltage hoodRequest = new PositionVoltage(0);
-
+ 
     private double targetRPS = 0;
-
+ 
     public OutakeSub() {
         TalonFXConfiguration shooterConfig = new TalonFXConfiguration();
         shooterConfig.Slot0.kP = OutakeConstants.shooterkP;
@@ -29,13 +29,13 @@ public class OutakeSub extends SubsystemBase {
         shooterConfig.Slot0.kG = OutakeConstants.shooterkG;
         shooterConfig.Slot0.kV = OutakeConstants.shooterkV;
         shooterConfig.Slot0.kA = OutakeConstants.shooterkA;
-
+ 
         shooterConfig.MotorOutput.Inverted = OutakeConstants.shooterLeftInversion;
         shooterLeft.getConfigurator().apply(shooterConfig);
-
+ 
         shooterConfig.MotorOutput.Inverted = OutakeConstants.shooterRightInversion;
         shooterRight.getConfigurator().apply(shooterConfig);
-
+ 
         TalonFXConfiguration hoodConfig = new TalonFXConfiguration();
         hoodConfig.Slot0.kP = OutakeConstants.hoodkP;
         hoodConfig.Slot0.kI = OutakeConstants.hoodkI;
@@ -48,17 +48,17 @@ public class OutakeSub extends SubsystemBase {
         hood.getConfigurator().apply(hoodConfig);
         hood.setPosition(0);
     }
-
+ 
     public void setSpeed(double rps) {
         targetRPS = rps;
         shooterLeft.setControl(velocityRequest.withVelocity(rps));
         shooterRight.setControl(velocityRequest.withVelocity(rps));
     }
-
+ 
     public void setHood(double position) {
         hood.setControl(hoodRequest.withPosition(position));
     }
-
+ 
     public boolean isReady() {
         double leftError = Math.abs(shooterLeft.getVelocity().getValueAsDouble() - targetRPS);
         double rightError = Math.abs(shooterRight.getVelocity().getValueAsDouble() - targetRPS);
@@ -66,7 +66,7 @@ public class OutakeSub extends SubsystemBase {
                 && leftError < ShootContants.shooterTolerance
                 && rightError < ShootContants.shooterTolerance;
     }
-
+ 
     public void stop() {
         targetRPS = 0;
         shooterLeft.stopMotor();
@@ -74,3 +74,4 @@ public class OutakeSub extends SubsystemBase {
         hood.setControl(hoodRequest.withPosition(ShootContants.hoodHome));
     }
 }
+ 
